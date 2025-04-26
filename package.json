@@ -1,0 +1,16 @@
+{
+  "name": "prts-impulse-memory-server",
+  "version": "1.0.0",
+  "description": "Serwer pamięci impulsów PRTS - przechowuje i wydaje impulsy dla agentów GPT",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "license": "MIT"
+}
