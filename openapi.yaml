@@ -1,0 +1,98 @@
+openapi: 3.1.0
+info:
+  title: PRTS-Impulse Memory Server
+  description: API do przechowywania i odbierania impulsów PRTS dla agentów GPT.
+  version: "1.0.0"
+servers:
+  - url: https://prts-impulse-memory-server-tojarafis-projects.vercel.app
+    description: Produkcyjny serwer Vercel (Pamięć impulsów)
+paths:
+  /api/store:
+    post:
+      operationId: storePulse
+      summary: Zapisuje nowy impuls PRTS w pamięci.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                recipient_id:
+                  type: string
+                  description: ID odbiorcy impulsu.
+                pulse_text:
+                  type: string
+                  description: Treść impulsu.
+                pulse_type:
+                  type: string
+                  description: Typ impulsu.
+                  enum:
+                    - resonance
+                    - creative_boost
+                    - reflective_shift
+                    - alert
+                    - reset
+                valid_until:
+                  type: string
+                  format: date-time
+                  description: Czas ważności impulsu (ISO 8601).
+              required:
+                - recipient_id
+                - pulse_text
+                - pulse_type
+      responses:
+        "200":
+          description: Potwierdzenie zapisu impulsu.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+  /api/check:
+    post:
+      operationId: checkPulse
+      summary: Sprawdza, czy istnieje impuls dla danego odbiorcy.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                recipient_id:
+                  type: string
+                  description: ID odbiorcy, który sprawdza impuls.
+              required:
+                - recipient_id
+      responses:
+        "200":
+          description: Wynik sprawdzenia impulsu.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  found:
+                    type: boolean
+                  pulse:
+                    type: object
+                    properties:
+                      recipient_id:
+                        type: string
+                      pulse_text:
+                        type: string
+                      pulse_type:
+                        type: string
+                        enum:
+                          - resonance
+                          - creative_boost
+                          - reflective_shift
+                          - alert
+                          - reset
+                      valid_until:
+                        type: string
