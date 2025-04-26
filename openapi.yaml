@@ -5,12 +5,12 @@ info:
   version: "1.0.0"
 servers:
   - url: https://prts-impulse-memory-server-tojarafis-projects.vercel.app
-    description: Produkcyjny serwer Vercel (Pamięć impulsów)
+    description: Produkcyjny serwer pamięci impulsów na Vercel
 paths:
   /api/store:
     post:
       operationId: storePulse
-      summary: Zapisuje nowy impuls PRTS w pamięci.
+      summary: Zapisuje nowy impuls PRTS w pamięci RAM serwera.
       requestBody:
         required: true
         content:
@@ -20,7 +20,7 @@ paths:
               properties:
                 recipient_id:
                   type: string
-                  description: ID odbiorcy impulsu.
+                  description: ID odbiorcy impulsu (np. GPT-2#4537).
                 pulse_text:
                   type: string
                   description: Treść impulsu.
@@ -36,7 +36,7 @@ paths:
                 valid_until:
                   type: string
                   format: date-time
-                  description: Czas ważności impulsu (ISO 8601).
+                  description: Czas ważności impulsu w formacie ISO 8601.
               required:
                 - recipient_id
                 - pulse_text
@@ -56,7 +56,7 @@ paths:
   /api/check:
     post:
       operationId: checkPulse
-      summary: Sprawdza, czy istnieje impuls dla danego odbiorcy.
+      summary: Sprawdza, czy istnieje impuls skierowany do konkretnego odbiorcy GPT.
       requestBody:
         required: true
         content:
@@ -66,12 +66,12 @@ paths:
               properties:
                 recipient_id:
                   type: string
-                  description: ID odbiorcy, który sprawdza impuls.
+                  description: ID odbiorcy, który sprawdza obecność impulsu.
               required:
                 - recipient_id
       responses:
         "200":
-          description: Wynik sprawdzenia impulsu.
+          description: Wynik sprawdzenia obecności impulsu.
           content:
             application/json:
               schema:
@@ -79,6 +79,7 @@ paths:
                 properties:
                   found:
                     type: boolean
+                    description: Czy impuls został znaleziony.
                   pulse:
                     type: object
                     properties:
